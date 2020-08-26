@@ -34,8 +34,8 @@ class version:
 
         current_commit = self.evio_repo.active_branch.commit
         tools_commit = self.repo_tools.active_branch.commit
-        # if str(evioconfig[current_commit]) != str(tools_commit):
-        #     print("Change commit")
+        if evioconfig[str(current_commit)] != tools_commit:
+             print("Change commit")
         print(current_commit)
         print(tools_commit)
 
