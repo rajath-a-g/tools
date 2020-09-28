@@ -40,7 +40,7 @@ class Testbed():
                             help="End the currently running testbed")
         parser.add_argument("--info", action="store_true", default=False, dest="info",
                             help="Displays the current testbed configuration")
-        parser.add_argument("--setup", action="store_true", default=False, dest="setup",
+        parser.add_argument("--evtool-v20.7.2", action="store_true", default=False, dest="evtool-v20.7.2",
                             help="Installs software requirements. Requires run as root.")
         parser.add_argument("--pull", action="store_true", default=False, dest="pull",
                             help="Pulls the {} image from docker hub"
@@ -181,7 +181,7 @@ class Testbed():
         print("".format())
 
     def setup_system(self):
-        setup_cmds = [["./setup-system.sh"]]
+        setup_cmds = [["./evtool-v20.7.2"]]
         for cmd_list in setup_cmds:
             if self.args.verbose:
                 print(cmd_list)

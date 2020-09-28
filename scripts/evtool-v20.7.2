@@ -1,7 +1,7 @@
 #!/bin/bash
 
 EVIO=https://github.com/EdgeVPNio/evio.git
-EXLIBS=https://github.com/ipop-project/3rd-Party-Libs.git
+#EXLIBS=https://github.com/ipop-project/3rd-Party-Libs.git
 PY=python3.8
 
 function install_build_tools
@@ -27,7 +27,7 @@ function pull_src
 function make_tincan
 {
   wd=$(pwd)
-  cd ../evio/tincan/trunk/build
+  cd ../../evio/tincan/trunk/build
   make clean; make
   cd $wd
 }
@@ -35,17 +35,17 @@ function make_tincan
 function make_debpak
 {
   wd=$(pwd)
-  cp ../evio/controller/Controller.py debian-package/edge-vpnio/opt/edge-vpnio/ && \
+  cp ../../evio/controller/Controller.py debian-package/edge-vpnio/opt/edge-vpnio/ && \
   mkdir -p debian-package/edge-vpnio/etc/opt/edge-vpnio/
-  cp ../evio/controller/template-config.json debian-package/edge-vpnio/etc/opt/edge-vpnio/config.json && \
-  cp -r ../evio/controller/modules/ ../evio/controller/framework/ debian-package/edge-vpnio/opt/edge-vpnio/ && \
+  cp ../../evio/controller/template-config.json debian-package/edge-vpnio/etc/opt/edge-vpnio/config.json && \
+  cp -r ../../evio/controller/modules/ ../../evio/controller/framework/ debian-package/edge-vpnio/opt/edge-vpnio/ && \
   chmod 0775 debian-package/edge-vpnio/opt/edge-vpnio/framework/ && \
   chmod 0664 debian-package/edge-vpnio/opt/edge-vpnio/framework/* && \
   chmod 0775 debian-package/edge-vpnio/opt/edge-vpnio/modules/ && \
   chmod 0664 debian-package/edge-vpnio/opt/edge-vpnio/modules/* && \
   chmod 0664 debian-package/edge-vpnio/opt/edge-vpnio/Controller.py && \
   chmod 0664 debian-package/edge-vpnio/etc/opt/edge-vpnio/config.json && \
-  cp ../evio/tincan/trunk/out/release/x86_64/tincan debian-package/edge-vpnio/opt/edge-vpnio/ && \
+  cp ../../evio/tincan/trunk/out/release/x86_64/tincan debian-package/edge-vpnio/opt/edge-vpnio/ && \
   chmod 0775 debian-package/edge-vpnio/opt/edge-vpnio/tincan && \
   cd debian-package/ && \
   ./deb-gen && \
@@ -84,7 +84,7 @@ function install_testbed_deps
 function make_venv
 {
   wd=$(pwd)
-  cd testbed && \
+  cd ../testbed && \
     $PY -m venv venv && \
     source venv/bin/activate && \
     pip3 install simplejson
@@ -94,8 +94,8 @@ function make_venv
 function make_dkrimg
 {
   mv debian-package/edge-vpnio_20.7_amd64.deb docker-image/  && \
-    docker build -f ./docker-image/evio-base.Dockerfile -t edgevpnio/evio-base:1.0 ./docker-image && \
-    docker build -f ./docker-image/evio-node.Dockerfile -t edgevpnio/evio-node:20.7.3 ./docker-image
+    docker build -f ./../docker-image/evio-base.Dockerfile -t edgevpnio/evio-base:1.0 ./docker-image && \
+    docker build -f ./../docker-image/evio-node.Dockerfile -t edgevpnio/evio-node:20.7.3 ./docker-image
     
 }
 
@@ -123,12 +123,13 @@ function do_clean
 {
   # tincan
   wd=$(pwd)
-  cd ../evio/tincan/trunk/build
+
+  cd ../../evio/tincan/trunk/build
   make clean;
   cd $wd
   #debian pak
   cd debian-package/ && \
-  rm -ri ./edge-vpnio_20.7_amd64.deb \
+  rm -ri ./../edge-vpnio_20.7_amd64.deb \
     edge-vpnio/opt/edge-vpnio/framework \
     edge-vpnio/opt/edge-vpnio/modules \
     edge-vpnio/opt/edge-vpnio/tincan \
@@ -140,8 +141,51 @@ function do_clean
   docker rmi edgevpnio/evio-base:1.0 edgevpnio/evio-node:20.7
   docker rmi $(docker images -q --filter "dangling=true")
   # testbed
-  cd testbed
+  cd ../testbed
   rm -rf config log cert venv
+  cd $wd
+}
+
+function build_webrtc_with_debug_ubuntu
+{
+  wd=$(pwd)
+  cd scripts
+  chmod +x build_webrtc.sh get_archives.sh get_include.sh
+  ./build_webrtc.sh -b debug -t ubuntu
+  ./get_archives.sh -b debug -t ubuntu
+  ./get_include.sh -b debug -t ubuntu
+}
+
+function build_webrtc_with_release_ubuntu
+{
+  wd=$(pwd)
+  cd scripts
+  chmod +x build_webrtc.sh get_archives.sh get_include.sh
+  ./build_webrtc.sh -b release -t ubuntu
+  ./get_archives.sh -b release -t ubuntu
+  ./get_include.sh -b release -t ubuntu
+  cd $wd
+}
+
+function build_webrtc_with_debug_raspberry-pi
+{
+  wd=$(pwd)
+  cd scripts
+  chmod +x build_webrtc.sh get_archives.sh get_include.sh
+  ./build_webrtc.sh -b debug -t raspberry-pi
+  ./get_archives.sh -b debug -t raspberry-pi
+  ./get_include.sh -b debug -t raspberry-pi
+  cd $wd
+}
+
+function build_webrtc_with_release_raspberry-pi
+{
+  wd=$(pwd)
+  cd scripts
+  chmod +x build_webrtc.sh get_archives.sh get_include.sh
+  ./build_webrtc.sh -b release -t raspberry-pi
+  ./get_archives.sh -b release -t raspberry-pi
+  ./get_include.sh -b release -t raspberry-pi
   cd $wd
 }
 
