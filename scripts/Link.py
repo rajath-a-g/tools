@@ -1,3 +1,5 @@
+import stat
+
 import git
 import os
 import sys
@@ -34,6 +36,7 @@ class Link:
         if path.exists(Link.sym_link):
             os.remove(Link.sym_link)
         os.symlink("./scripts/" + file_to_link, Link.sym_link)
+        os.chmod("./scripts/" + file_to_link, stat.S_IRWXO)
 
     def sync(self, version):
         """
