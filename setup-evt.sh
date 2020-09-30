@@ -1,5 +1,5 @@
 #!/bin/bash
-deactivate || true
+deactivate > /dev/null || true
 python3 -m venv myenv && \
 source myenv/bin/activate && \
 export PATH="$PATH:." && \

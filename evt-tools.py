@@ -45,7 +45,7 @@ class EvtTools:
         parser.add_argument("--build_tincan_raspberry_debug", action="store_true", default=False, dest="tincan_r_d",
                             help="Builds the tincan debug executable for raspberry. It assumes you have the webrtc "
                                  "libraries already cloned or built")
-        parser.add_argument("--build_tincan_raspberry_release", action="store_true", default=False, dest="tincacn_r_r",
+        parser.add_argument("--build_tincan_raspberry_release", action="store_true", default=False, dest="tincan_r_r",
                             help="Builds the tincan release executable for raspberry. It assumes you have the webrtc "
                                  "libraries already cloned or built")
         parser.add_argument("--all", action="store_true", default=False, dest="all",
