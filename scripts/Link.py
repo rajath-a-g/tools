@@ -57,6 +57,7 @@ class Link:
             #     file_to_link = mapping[str(self.evio_repo.active_branch)]["default"]
             print(file_to_link)
             os.symlink(file_to_link, "./evt")
+            os.chmod("./scripts/" + file_to_link, stat.S_IRWXO)
 
     def get_repository(self):
         """
