@@ -36,7 +36,7 @@ class Link:
         if path.exists(Link.sym_link):
             os.remove(Link.sym_link)
         os.symlink("./scripts/" + file_to_link, Link.sym_link)
-        os.chmod("./scripts/" + file_to_link, stat.S_IRWXO)
+        os.chmod("./scripts/" + file_to_link, 0o775)
 
     def sync(self, version):
         """
@@ -50,14 +50,6 @@ class Link:
                 file_to_link = mapping[str(self.evio_repo.active_branch)][self.evio_repo.tags[0].commit]
             else:
                 file_to_link = mapping[version]["default"]
-            # print(str(self.evio_repo.tags[0].commit))
-            # if mapping.get(str(self.evio_repo.active_branch)).get(str(self.evio_repo.tags[0].commit)) is not None:
-            #     file_to_link = mapping[str(self.evio_repo.active_branch)][self.evio_repo.tags[0].commit]
-            # else:
-            #     file_to_link = mapping[str(self.evio_repo.active_branch)]["default"]
-            print(file_to_link)
-            os.symlink(file_to_link, "./evt")
-            os.chmod("./scripts/" + file_to_link, stat.S_IRWXO)
 
     def get_repository(self):
         """
