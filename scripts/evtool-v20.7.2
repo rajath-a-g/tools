@@ -26,10 +26,7 @@ function pull_src
 
 function make_tincan
 {
-  wd=$(pwd)
-  cd ../../evio/tincan/trunk/build
-  make clean; make
-  cd $wd
+
 }
 
 function make_debpak
@@ -146,7 +143,7 @@ function do_clean
   cd $wd
 }
 
-function build_webrtc_with_debug_ubuntu
+function build_webrtc
 {
   wd=$(pwd)
   cd scripts
@@ -167,7 +164,7 @@ function build_webrtc_with_release_ubuntu
   cd $wd
 }
 
-function build_webrtc_with_debug_raspberry-pi
+function build_webrtc_with_debug_raspberry_pi
 {
   wd=$(pwd)
   cd scripts
@@ -178,7 +175,7 @@ function build_webrtc_with_debug_raspberry-pi
   cd $wd
 }
 
-function build_webrtc_with_release_raspberry-pi
+function build_webrtc_with_release_raspberry_pi
 {
   wd=$(pwd)
   cd scripts
@@ -189,11 +186,40 @@ function build_webrtc_with_release_raspberry-pi
   cd $wd
 }
 
+function build_tincan {
+  wd=$(pwd)
+  cd scripts
+  ./build_tincan.sh  -b debug -t ubuntu
+  cd $wd
+}
+
+function build_tincan_release_ubuntu {
+  wd=$(pwd)
+  cd scripts
+  ./build_tincan.sh  -b release -t ubuntu
+  cd $wd
+}
+
+function build_tincan_debug_raspberry {
+  wd=$(pwd)
+  cd scripts
+  ./build_tincan.sh  -b debug -t raspberry-pi
+  cd $wd
+}
+
+function build_tincan_release_raspberry {
+  wd=$(pwd)
+  cd scripts
+  ./build_tincan.sh  -b debug -t raspberry-pi
+  cd $wd
+}
+
 function do_full_setup
 {
   install_build_tools
   pull_src
-  make_tincan
+  build_webrtc
+  build_tincan
   make_debpak
   make_dkrimg
   make_testbed_prereqs
@@ -208,7 +234,7 @@ case $1 in
     pull_src
     ;;
   tincan)
-    make_tincan
+    build_tincan
     ;;
   debpak)
     make_debpak
@@ -227,6 +253,30 @@ case $1 in
     ;;
   clean)
     do_clean
+    ;;
+  build_webrtc)
+    build_webrtc
+    ;;
+  build_webrtc_with_release_ubuntu)
+    build_webrtc_with_release_ubuntu
+    ;;
+  build_webrtc_with_debug_raspberry_pi)
+    build_webrtc_with_debug_raspberry_pi
+    ;;
+  build_webrtc_with_release_raspberry_pi)
+    build_webrtc_with_release_raspberry_pi
+    ;;
+  build_tincan)
+    build_tincan
+    ;;
+  build_tincan_release_ubuntu)
+    build_tincan_release_ubuntu
+    ;;
+  build_tincan_debug_raspberry)
+    build_tincan_debug_raspberry
+    ;;
+  build_tincan_release_raspberry)
+    build_tincan_release_raspberry
     ;;
   all)
     do_full_setup

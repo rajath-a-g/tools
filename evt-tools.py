@@ -18,8 +18,6 @@ class EvtTools:
                             help="Installs the required build tools.")
         parser.add_argument("--src", action="store_true", default=False, dest="src",
                             help="Clones EVIO repo.")
-        parser.add_argument("--tincan", action="store_true", default=False, dest="tincan",
-                            help="Builds the tincan module.")
         parser.add_argument("--debpak", action="store_true", default=False, dest="debpak",
                             help="Generates the Debian package.")
         parser.add_argument("--testbed", action="store_true", default=False, dest="testbed",
@@ -28,6 +26,28 @@ class EvtTools:
                             help="Setup the virtual environment.")
         parser.add_argument("--xmpp", action="store_true", default=False, dest="xmpp",
                             help="Install openfire server.")
+        parser.add_argument("--build_docker", action="store_true", default=False, dest="dkrimg",
+                            help="Builds the docker image if you have already built the debian package.")
+        parser.add_argument("--build_webrtc", action="store_true", default=False, dest="webrtc",
+                            help="Clones and builds the webrtc libraries for ubuntu and returns a debug build.")
+        parser.add_argument("--build_webrtc_release", action="store_true", default=False, dest="webrtc_r",
+                            help="Clones and builds the webrtc libraries for ubuntu and returns a release build.")
+        parser.add_argument("--build_webrtc_raspberry_debug", action="store_true", default=False, dest="webrtc_r_d",
+                            help="Clones and builds the webrtc libraries for raspberry and returns a debug build.")
+        parser.add_argument("--build_webrtc_raspberry_release", action="store_true", default=False, dest="webrtc_r_r",
+                            help="Clones and builds the webrtc libraries for raspberry and returns a release build.")
+        parser.add_argument("--build_tincan", action="store_true", default=False, dest="tincan",
+                            help="Builds the tincan debug executable for ubuntu. It assumes you have the webrtc "
+                                 "libraries already cloned or built")
+        parser.add_argument("--build_tincan_release", action="store_true", default=False, dest="tincan_r",
+                            help="Builds the tincan release executable for ubuntu. It assumes you have the webrtc "
+                                 "libraries already cloned or built")
+        parser.add_argument("--build_tincan_raspberry_debug", action="store_true", default=False, dest="tincan_r_d",
+                            help="Builds the tincan debug executable for raspberry. It assumes you have the webrtc "
+                                 "libraries already cloned or built")
+        parser.add_argument("--build_tincan_raspberry_release", action="store_true", default=False, dest="tincacn_r_d",
+                            help="Builds the tincan release executable for raspberry. It assumes you have the webrtc "
+                                 "libraries already cloned or built")
         parser.add_argument("--all", action="store_true", default=False, dest="all",
                             help="Setup the whole environment.")
         self.args = parser.parse_args()
@@ -59,6 +79,33 @@ class EvtTools:
 
     def xmpp(self):
         subprocess.run(["ev-tools.sh xmpp"], shell=True)
+
+    def build_docker(self):
+        subprocess.run(["ev-tools.sh dkrimg"], shell=True)
+
+    def build_webrtc(self):
+        subprocess.run(["ev-tools.sh build_webrtc"], shell=True)
+
+    def build_webrtc_release_ubuntu(self):
+        subprocess.run(["ev-tools.sh build_webrtc_with_release_ubuntu"], shell=True)
+
+    def build_webrtc_debug_raspberry(self):
+        subprocess.run(["ev-tools.sh build_webrtc_with_debug_raspberry_pi"], shell=True)
+
+    def build_webrtc_release_raspberry(self):
+        subprocess.run(["ev-tools.sh build_webrtc_with_release_raspberry_pi"], shell=True)
+
+    def build_tincan(self):
+        subprocess.run(["ev-tools.sh build_tincan"], shell=True)
+
+    def build_tincan_release_ubuntu(self):
+        subprocess.run(["ev-tools.sh build_tincan_release_ubuntu"], shell=True)
+
+    def build_tincan_debug_raspberry(self):
+        subprocess.run(["ev-tools.sh build_tincan_debug_raspberry"], shell=True)
+
+    def build_tincan_release_raspberry(self):
+        subprocess.run(["ev-tools.sh build_tincan_release_raspberry"], shell=True)
 
     def all(self):
         subprocess.run(["ev-tools.sh all"], shell=True)
@@ -92,6 +139,42 @@ def main():
 
     if tools.args.xmpp:
         tools.xmpp()
+        return
+
+    if tools.args.dkrimg:
+        tools.build_docker()
+        return
+
+    if tools.args.webrtc:
+        tools.build_webrtc()
+        return
+
+    if tools.args.webrtc_r:
+        tools.build_webrtc_release_ubuntu()
+        return
+
+    if tools.args.webrtc_r_d:
+        tools.build_webrtc_debug_raspberry()
+        return
+
+    if tools.args.webrtc_r_r:
+        tools.build_webrtc_release_raspberry()
+        return
+
+    if tools.args.tincan:
+        tools.build_tincan()
+        return
+
+    if tools.args.tincan_r:
+        tools.build_tincan_release_ubuntu()
+        return
+
+    if tools.args.tincan_r_d:
+        tools.build_tincan_debug_raspberry()
+        return
+
+    if tools.args.tincan_r_r:
+        tools.build_tincan_release_raspberry()
         return
 
     if tools.args.all:
