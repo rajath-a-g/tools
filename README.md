@@ -2,8 +2,30 @@
 
 Various management and configuration tools used with EdgeVPNio software development.
 
-### How to run
-Tested on Windows with running on a command prompt with administrator privileges. Right now it links the evt script to the correct version.
+## Using the repository
+One the same directory level as evio clone the repository with:
+``` 
+git clone https://github.com/rajath-a-g/tools.git
+```
+Move to the tools directory and use branch ev-tools using :
+```
+cd tools && git checkout ev-tools
+```
 
-### In Progress
-How to handle if there are multiple repositories of Evio present.
+## Setup
+To setup running the evt tool use the following command :
+```
+source setup-evt.sh
+```
+
+## Usage
+Run the command to view all options:
+```
+evt -h
+```
+```
+evt --sync
+```
+
+## TO DO
+Move to one output folder. Run sync before any command.
